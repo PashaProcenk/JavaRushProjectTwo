@@ -26,4 +26,13 @@ public class Island {
             }
             return null;
         }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
 }

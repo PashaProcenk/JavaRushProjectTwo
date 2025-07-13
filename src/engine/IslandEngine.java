@@ -12,7 +12,11 @@ public class IslandEngine {
     public void start() {
         System.out.println("🌴 Island simulation started");
         System.out.println("Size of the island: 20 x 10");
+
+        AnimalGenerator generator = new AnimalGenerator(island);
+        generator.populateWolves(10);
     }
+
 }
 
 
