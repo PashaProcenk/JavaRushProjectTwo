@@ -12,7 +12,7 @@ public abstract class Herbivore extends Animal {
         while (it.hasNext()) {
             Object obj = it.next();
             if (obj instanceof Plant && foodRequired > 0) {
-                it.remove(); // З'їли рослину
+                it.remove();
                 foodRequired -= 1.0;
             }
         }

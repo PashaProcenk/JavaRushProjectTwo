@@ -1,6 +1,7 @@
 package engine;
 
 import map.Island;
+import statistics.IslandPrinter;
 
 public class IslandEngine {
     private final Island island;
@@ -14,7 +15,9 @@ public class IslandEngine {
         System.out.println("Size of the island: 20 x 10");
 
         AnimalGenerator generator = new AnimalGenerator(island);
-        generator.populateWolves(10);
+        generator.populateAllAnimals(20);
+
+        IslandPrinter.print(island);
     }
 
 }
