@@ -10,7 +10,7 @@ import java.util.Collections;
 public class Island {
     private final int width;
     private final int height;
-    private final Location[][] grid; // Сітка клітинок
+    private final Location[][] grid;
 
     public Island(int width, int height) {
         this.width = width;
@@ -31,7 +31,7 @@ public class Island {
         if (x >= 0 && x < width && y >= 0 && y < height) {
             return grid[x][y];
         }
-        return null; //
+        return null;
     }
 
     public int getWidth() {

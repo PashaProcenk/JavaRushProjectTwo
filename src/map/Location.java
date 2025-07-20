@@ -10,12 +10,12 @@ import Model.WorldObject;
 public class Location {
     private final int x;
     private final int y;
-    private final List<WorldObject> objectsAtLocation; // Об'єкти на цій клітинці
+    private final List<WorldObject> objectsAtLocation;
 
     public Location(int x, int y) {
         this.x = x;
         this.y = y;
-        this.objectsAtLocation = Collections.synchronizedList(new ArrayList<>()); // Потокобезпечний список
+        this.objectsAtLocation = Collections.synchronizedList(new ArrayList<>());
     }
 
     public int getX() {
@@ -35,7 +35,7 @@ public class Location {
     }
 
     public List<WorldObject> getObjects() {
-        return new ArrayList<>(objectsAtLocation); // Повертаємо копію, щоб уникнути ConcurrentModificationException
+        return new ArrayList<>(objectsAtLocation);
     }
 
     public <T extends WorldObject> List<T> getObjectsOfType(Class<T> type) {

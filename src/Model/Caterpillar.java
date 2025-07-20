@@ -1,6 +1,6 @@
 package Model;
 
-public class Caterpillar extends model.Herbivore {
+public class Caterpillar extends Model.Herbivore {
     public Caterpillar(int x, int y) {
         super(x, y, 15, 1, 45, 1);
     }

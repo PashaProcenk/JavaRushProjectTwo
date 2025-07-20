@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import util.RandomUtil;
 
-public class Duck extends model.Herbivore {
+public class Duck extends Model.Herbivore {
     public Duck(int x, int y) {
         super(x, y, 25, 2, 30, 3);
     }

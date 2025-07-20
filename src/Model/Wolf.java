@@ -1,6 +1,6 @@
 package Model;
 
-public class Wolf extends model.Predator {
+public class Wolf extends Model.Predator {
     public Wolf(int x, int y) {
         super(x, y, 50, 2, 20, 5, 15);
     }

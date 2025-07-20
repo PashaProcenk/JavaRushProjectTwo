@@ -1,6 +1,6 @@
 package Model;
 
-public class Goat extends model.Herbivore {
+public class Goat extends Model.Herbivore {
     public Goat(int x, int y) {
         super(x, y, 40, 2, 30, 4);
     }
