@@ -1,4 +1,11 @@
 package Model;
 
-public class Horse {
+public class Horse extends model.Herbivore {
+    public Horse(int x, int y) {
+        super(x, y, 60, 3, 30, 6);
+    }
+    @Override
+    public Animal reproduce(int newX, int newY) {
+        return new Horse(newX, newY);
+    }
 }
