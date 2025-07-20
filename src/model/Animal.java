@@ -1,42 +1,58 @@
-package model;
+package Model;
 
-import map.Location;
+import java.util.List;
+import util.RandomUtil; // Використовуємо новий RandomUtil
 
-public abstract class Animal {
-    protected String icon;
-    protected double weight;
-    protected int maxInCell;
+public abstract class Animal extends WorldObject {
+    public int satiety;
+    protected int maxSatiety;
     protected int speed;
-    protected double foodRequired;
-    protected boolean isAlive = true;
+    protected int reproductionChance;
+    protected int hungerPerTick;
 
-    public abstract void eat(Location location);
-    public abstract void move(Location current, Location[][] map);
-    public abstract void reproduce(Location location);
-    public abstract Animal clone();
-
-    public boolean isAlive() {
-        return isAlive;
+    public Animal(int x, int y, int maxSatiety, int speed, int reproductionChance, int hungerPerTick) {
+        super(x, y);
+        this.maxSatiety = maxSatiety;
+        this.satiety = maxSatiety / 2;
+        this.speed = speed;
+        this.reproductionChance = reproductionChance;
+        this.hungerPerTick = hungerPerTick;
     }
 
-    public String getIcon() {
-        return icon;
+    public abstract void eat(List<WorldObject> availableFood);
+    public abstract Animal reproduce(int newX, int newY);
+    public abstract int[] chooseMoveDirection(int mapWidth, int mapHeight);
+
+    public void decreaseSatiety() {
+        this.satiety = Math.max(0, this.satiety - hungerPerTick);
     }
 
-    public double getWeight() {
-        return weight;
+    public boolean isHungry() {
+        return satiety < maxSatiety / 4;
     }
 
-    public int getMaxInCell() {
-        return maxInCell;
+    public boolean isDead() {
+        return satiety <= 0;
     }
 
-    public int getSpeed() {
-        return speed;
+    public void move(int mapWidth, int mapHeight) {
+        int[] direction = chooseMoveDirection(mapWidth, mapHeight);
+        int newX = x + direction[0] * speed;
+        int newY = y + direction[1] * speed;
+
+        this.x = Math.max(0, Math.min(mapWidth - 1, newX));
+        this.y = Math.max(0, Math.min(mapHeight - 1, newY));
     }
 
-    public double getFoodRequired() {
-        return foodRequired;
+    public boolean canReproduce() {
+        return satiety > maxSatiety / 2 && RandomUtil.nextInt(100) < reproductionChance;
     }
 
+    public int getSatiety() {
+        return satiety;
+    }
+
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
 }

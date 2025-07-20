@@ -1,19 +1,22 @@
-package model;
+package Model;
 
-public class Plant {
-        private final String icon = "\uD83C\uDF3F"; // 🌿
+public class Plant extends WorldObject {
+    private int nutritionValue;
 
-        public double getWeight() {
-            return 1.0;
-        }
-
-        public String getIcon() {
-            return icon;
-        }
-
-        @Override
-        public String toString() {
-            return icon;
-        }
+    public Plant(int x, int y, int nutritionValue) {
+        super(x, y);
+        this.nutritionValue = nutritionValue;
     }
 
+    public int getNutritionValue() {
+        return nutritionValue;
+    }
+
+    public void decreaseNutritionValue(int amount) {
+        this.nutritionValue = Math.max(0, this.nutritionValue - amount);
+    }
+
+    public boolean isEmpty() {
+        return nutritionValue <= 0;
+    }
+}

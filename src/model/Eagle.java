@@ -1,22 +1,11 @@
-package model;
+package Model;
 
-import map.Location;
-
-public class Eagle extends Predator {
-    public Eagle() {
-        this.icon = "🦅";
-        this.weight = 6;
-        this.maxInCell = 20;
-        this.speed = 3;
-        this.foodRequired = 1;
+public class Eagle extends model.Predator {
+    public Eagle(int x, int y) {
+        super(x, y, 35, 3, 20, 4, 12);
     }
-
     @Override
-    public void move(Location current, Location[][] map) {}
-    @Override
-    public void reproduce(Location location) {}
-    @Override
-    public Animal clone() {
-        return new Eagle();
+    public Animal reproduce(int newX, int newY) {
+        return new Eagle(newX, newY);
     }
 }

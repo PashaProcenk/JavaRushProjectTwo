@@ -1,29 +1,11 @@
-package model;
+package Model;
 
-import map.Location;
-
-public class Wolf  extends Predator {
-    public Wolf() {
-        this.icon = "\uD83D\uDC3A"; // 🐺
-        this.weight = 50;
-        this.maxInCell = 30;
-        this.speed = 3;
-        this.foodRequired = 8;
+public class Wolf extends model.Predator {
+    public Wolf(int x, int y) {
+        super(x, y, 50, 2, 20, 5, 15);
     }
-
     @Override
-    public void move(Location current, Location[][] map) {
-
+    public Animal reproduce(int newX, int newY) {
+        return new Wolf(newX, newY);
     }
-
-    @Override
-    public void reproduce(Location location) {
-
-    }
-
-    @Override
-    public Animal clone() {
-        return new Wolf();
-    }
-
 }

@@ -1,22 +1,11 @@
-package model;
+package Model;
 
-import map.Location;
-
-public class Rabbit extends Herbivore {
-    public Rabbit() {
-        this.icon = "🐇";
-        this.weight = 2;
-        this.maxInCell = 150;
-        this.speed = 2;
-        this.foodRequired = 0.45;
+public class Rabbit extends model.Herbivore {
+    public Rabbit(int x, int y) {
+        super(x, y, 20, 2, 40, 2);
     }
-
     @Override
-    public void move(Location current, Location[][] map) {}
-    @Override
-    public void reproduce(Location location) {}
-    @Override
-    public Animal clone() {
-        return new Rabbit();
+    public Animal reproduce(int newX, int newY) {
+        return new Rabbit(newX, newY);
     }
 }

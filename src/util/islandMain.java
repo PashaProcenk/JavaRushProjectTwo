@@ -2,9 +2,9 @@ package util;
 
 import engine.IslandEngine;
 
-public class islandMain {
+public class IslandMain {
     public static void main(String[] args) {
-        IslandEngine engine = new IslandEngine();
-        engine.start();
+        IslandEngine engine = new IslandEngine(20, 10); // Створюємо двигун симуляції
+        engine.startSimulation(); // Запускаємо симуляцію
     }
 }
