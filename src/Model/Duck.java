@@ -6,7 +6,7 @@ import util.RandomUtil;
 
 public class Duck extends Model.Herbivore {
     public Duck(int x, int y) {
-        super(x, y, 25, 2, 30, 3);
+        super(x, y, 25, 2, 30, 3,"\\uD83E\\uDD86");
     }
 
     @Override

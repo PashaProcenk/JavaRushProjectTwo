@@ -2,7 +2,7 @@ package Model;
 
 public class Eagle extends Model.Predator {
     public Eagle(int x, int y) {
-        super(x, y, 35, 3, 20, 4, 12);
+        super(x, y, 35, 3, 20, 4, 12, "\uD83E\uDD85");
     }
     @Override
     public Animal reproduce(int newX, int newY) {

@@ -2,7 +2,7 @@ package Model;
 
 public class Rabbit extends Model.Herbivore {
     public Rabbit(int x, int y) {
-        super(x, y, 20, 2, 40, 2);
+        super(x, y, 20, 2, 40, 2, "\\uD83D\\uDC07");
     }
     @Override
     public Animal reproduce(int newX, int newY) {

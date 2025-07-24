@@ -1,22 +1,24 @@
 package Model;
 
 import java.util.List;
-import util.RandomUtil; // Використовуємо новий RandomUtil
+import util.RandomUtil;
 
 public abstract class Animal extends WorldObject {
-    public int satiety;
+    protected int satiety;
     protected int maxSatiety;
     protected int speed;
     protected int reproductionChance;
     protected int hungerPerTick;
+    protected String icon;
 
-    public Animal(int x, int y, int maxSatiety, int speed, int reproductionChance, int hungerPerTick) {
+    public Animal(int x, int y, int maxSatiety, int speed, int reproductionChance, int hungerPerTick, String icon) {
         super(x, y);
         this.maxSatiety = maxSatiety;
         this.satiety = maxSatiety / 2;
         this.speed = speed;
         this.reproductionChance = reproductionChance;
         this.hungerPerTick = hungerPerTick;
+        this.icon = icon;
     }
 
     public abstract void eat(List<WorldObject> availableFood);
@@ -54,5 +56,9 @@ public abstract class Animal extends WorldObject {
 
     public String getType() {
         return this.getClass().getSimpleName();
+    }
+
+    public String getIcon() {
+        return icon;
     }
 }

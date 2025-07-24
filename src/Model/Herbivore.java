@@ -2,15 +2,12 @@ package Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import Model.Animal;
-import Model.Plant;
-import Model.WorldObject;
 import util.RandomUtil;
 
-public abstract class Herbivore extends Animal { // Наслідується від Animal
-    public Herbivore(int x, int y, int maxSatiety, int speed, int reproductionChance, int hungerPerTick) {
-        super(x, y, maxSatiety, speed, reproductionChance, hungerPerTick);
+public abstract class Herbivore extends Animal {
+
+    public Herbivore(int x, int y, int maxSatiety, int speed, int reproductionChance, int hungerPerTick, String icon) {
+        super(x, y, maxSatiety, speed, reproductionChance, hungerPerTick, icon);
     }
 
     @Override

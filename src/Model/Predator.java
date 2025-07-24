@@ -2,20 +2,13 @@ package Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import Model.Animal;
-import Model.WorldObject;
 import util.RandomUtil;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import util.RandomUtil; // Це імпорт, який має бути
 
 public abstract class Predator extends Animal {
     protected int attackPower;
 
-    public Predator(int x, int y, int maxSatiety, int speed, int reproductionChance, int hungerPerTick, int attackPower) {
-        super(x, y, maxSatiety, speed, reproductionChance, hungerPerTick);
+    public Predator(int x, int y, int maxSatiety, int speed, int reproductionChance, int hungerPerTick, int attackPower, String icon) {
+        super(x, y, maxSatiety, speed, reproductionChance, hungerPerTick, icon);
         this.attackPower = attackPower;
     }
 
@@ -41,7 +34,6 @@ public abstract class Predator extends Animal {
 
     @Override
     public int[] chooseMoveDirection(int mapWidth, int mapHeight) {
-        // *** ПОМИЛКА БУЛА ТУТ, ВИПРАВЛЕНО: ***
         int dx = RandomUtil.nextInt(-1, 2); // Замість RandomUtil.nextInt(origin: -1, bound: 2);
         int dy = RandomUtil.nextInt(-1, 2); // Замість RandomUtil.nextInt(origin: -1, bound: 2);
         return new int[]{dx, dy};

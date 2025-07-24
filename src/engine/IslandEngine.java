@@ -5,9 +5,12 @@ import map.Location;
 import Model.WorldObject;
 import Model.Plant;
 import Model.Animal;
+import Model.Predator;
+import Model.Herbivore;
 import Model.*;
 import statistics.StatisticsPrinter;
 import util.RandomUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,21 +21,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class IslandEngine {
-    private Island island; //
+    private Island island;
     private final ScheduledExecutorService scheduledPool;
     private final int animalThreadPoolSize = 5;
     private final int plantGrowthIntervalSeconds = 5;
     private final int animalLifeCycleIntervalSeconds = 1;
-    private final int statisticsIntervalSeconds = 2;
+    private final int statisticsIntervalSeconds = 4;
+    private final int renderIntervalSeconds = 4;
 
     public IslandEngine(int width, int height) {
-        this.island = new Island(width, height); // Створюємо об'єкт Island
-        this.scheduledPool = Executors.newScheduledThreadPool(3);
+        this.island = new Island(width, height);
+        this.scheduledPool = Executors.newScheduledThreadPool(4);
         initializeIslandPopulation();
     }
 
     private void initializeIslandPopulation() {
-        // Додаємо трохи рослин на початку
         for (int i = 0; i < island.getWidth() * island.getHeight() / 10; i++) {
             int x = RandomUtil.nextInt(island.getWidth());
             int y = RandomUtil.nextInt(island.getHeight());
@@ -43,7 +46,6 @@ public class IslandEngine {
             }
         }
 
-        // Додаємо початкових тварин
         island.addWorldObject(new Wolf(5, 5));
         island.addWorldObject(new Wolf(6, 6));
         island.addWorldObject(new Boa(10, 10));
@@ -65,11 +67,11 @@ public class IslandEngine {
 
     private Runnable plantGrowthTask = () -> {
         System.out.println("--- Tick: Plants growing ---");
-        // Логіка додавання нових рослин
         if (island.getAllWorldObjectsGroupedByType().getOrDefault(Plant.class.getSimpleName(), Collections.emptyList()).size() < island.getWidth() * island.getHeight() / 5) {
             int x = RandomUtil.nextInt(island.getWidth());
             int y = RandomUtil.nextInt(island.getHeight());
             Location location = island.getLocation(x, y);
+            // Перевіряємо, чи вже є рослина на цій клітинці
             boolean plantExists = location.getObjectsOfType(Plant.class).stream().anyMatch(p -> true);
             if (!plantExists) {
                 island.addWorldObject(new Plant(x, y, 10 + RandomUtil.nextInt(20)));
@@ -80,9 +82,7 @@ public class IslandEngine {
     private Runnable animalLifeCycleTask = () -> {
         System.out.println("--- Tick: Animal life cycle ---");
         try (var animalPool = Executors.newFixedThreadPool(animalThreadPoolSize)) {
-            // Отримуємо всіх тварин через Island
-            Map<String, List<WorldObject>> currentObjects = island.getAllWorldObjectsGroupedByType();
-            List<Animal> animalsToProcess = currentObjects.values().stream()
+            List<Animal> animalsToProcess = island.getAllWorldObjectsGroupedByType().values().stream()
                     .flatMap(List::stream)
                     .filter(obj -> obj instanceof Animal)
                     .map(obj -> (Animal) obj)
@@ -105,11 +105,15 @@ public class IslandEngine {
                     }
 
                     Location oldLocation = island.getLocation(animal.getX(), animal.getY());
-                    if (oldLocation != null) oldLocation.removeObject(animal);
+                    if (oldLocation != null) {
+                        oldLocation.removeObject(animal);
+                    }
 
                     animal.move(island.getWidth(), island.getHeight());
                     Location newLocation = island.getLocation(animal.getX(), animal.getY());
-                    if (newLocation != null) newLocation.addObject(animal);
+                    if (newLocation != null) {
+                        newLocation.addObject(animal);
+                    }
 
                     List<WorldObject> foodInLocation = newLocation.getObjects();
                     if (animal.isHungry() && !foodInLocation.isEmpty()) {
@@ -144,6 +148,7 @@ public class IslandEngine {
                 animalPool.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                System.err.println("Animal life cycle task interrupted: " + e.getMessage());
             }
 
             newAnimals.forEach(island::addWorldObject);
@@ -160,10 +165,15 @@ public class IslandEngine {
         StatisticsPrinter.printIslandStatistics(island.getAllWorldObjectsGroupedByType());
     };
 
+    private Runnable renderTask = () -> {
+        Render.renderIsland(island);
+    };
+
     public void startSimulation() {
         scheduledPool.scheduleAtFixedRate(plantGrowthTask, 0, plantGrowthIntervalSeconds, TimeUnit.SECONDS);
         scheduledPool.scheduleAtFixedRate(animalLifeCycleTask, 0, animalLifeCycleIntervalSeconds, TimeUnit.SECONDS);
         scheduledPool.scheduleAtFixedRate(statisticsTask, 0, statisticsIntervalSeconds, TimeUnit.SECONDS);
+        scheduledPool.scheduleAtFixedRate(renderTask, 0, renderIntervalSeconds, TimeUnit.SECONDS); // Запускаємо рендеринг
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             scheduledPool.shutdown();
